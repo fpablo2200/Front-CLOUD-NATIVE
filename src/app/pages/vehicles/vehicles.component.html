@@ -1,0 +1,82 @@
+<div class="page">
+  <div>
+    <h3>Gestión de vehículos</h3>
+    <p>Registra y monitorea buses activos en la flota.</p>
+  </div>
+
+  <div class="grid">
+    <form class="card form" [formGroup]="form" (ngSubmit)="submit()">
+      <h4>Nuevo vehículo</h4>
+
+      <label>
+        Placa
+        <input class="input" formControlName="plate" placeholder="ABC-1234" />
+        <span class="form-error" *ngIf="errorFor('plate')">{{ errorFor('plate') }}</span>
+      </label>
+
+      <label>
+        Código interno
+        <input class="input" formControlName="code" placeholder="BUS-21" />
+        <span class="form-error" *ngIf="errorFor('code')">{{ errorFor('code') }}</span>
+      </label>
+
+      <label>
+        Modelo
+        <input class="input" formControlName="model" placeholder="Volare W9" />
+        <span class="form-error" *ngIf="errorFor('model')">{{ errorFor('model') }}</span>
+      </label>
+
+      <label>
+        Capacidad
+        <input class="input" type="number" formControlName="capacity" />
+        <span class="form-error" *ngIf="errorFor('capacity')">{{ errorFor('capacity') }}</span>
+      </label>
+
+      <label>
+        Ruta asignada
+        <input class="input" formControlName="route" placeholder="Norte Centro" />
+        <span class="form-error" *ngIf="errorFor('route')">{{ errorFor('route') }}</span>
+      </label>
+
+      <label>
+        Conductor
+        <input class="input" formControlName="driver" placeholder="Valeria Soto" />
+        <span class="form-error" *ngIf="errorFor('driver')">{{ errorFor('driver') }}</span>
+      </label>
+
+      <label>
+        Estado
+        <select class="input" formControlName="status">
+          <option>En ruta</option>
+          <option>En terminal</option>
+          <option>Retrasado</option>
+          <option>Mantenimiento</option>
+        </select>
+      </label>
+
+      <button class="btn btn-primary" type="submit" [disabled]="saving">
+        {{ saving ? 'Guardando...' : 'Registrar vehículo' }}
+      </button>
+    </form>
+
+    <div class="card list">
+      <h4>Flota registrada</h4>
+      <div class="list-body" *ngIf="vehicles$ | async as vehicles">
+        <div class="row" *ngFor="let vehicle of vehicles">
+          <div>
+            <strong>{{ vehicle.code }}</strong>
+            <span>{{ vehicle.route }} · {{ vehicle.driver }}</span>
+          </div>
+          <div class="meta">
+            <span class="plate">{{ vehicle.plate }}</span>
+            <span class="badge" [class.badge-warning]="vehicle.status === 'Retrasado'"
+              [class.badge-danger]="vehicle.status === 'Mantenimiento'"
+              [class.badge-success]="vehicle.status === 'En ruta' || vehicle.status === 'En terminal'">
+              {{ vehicle.status }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="page">
+  <div>
+    <h3>Gestión de rutas</h3>
+    <p>Define recorridos, paraderos y colores de identificación.</p>
+  </div>
+
+  <div class="grid">
+    <form class="card form" [formGroup]="form" (ngSubmit)="submit()">
+      <h4>Nueva ruta</h4>
+
+      <label>
+        Código
+        <input class="input" formControlName="code" placeholder="R-NC" />
+        <span class="form-error" *ngIf="errorFor('code')">{{ errorFor('code') }}</span>
+      </label>
+
+      <label>
+        Nombre
+        <input class="input" formControlName="name" placeholder="Norte Centro" />
+        <span class="form-error" *ngIf="errorFor('name')">{{ errorFor('name') }}</span>
+      </label>
+
+      <label>
+        Origen
+        <input class="input" formControlName="origin" placeholder="Terminal Norte" />
+        <span class="form-error" *ngIf="errorFor('origin')">{{ errorFor('origin') }}</span>
+      </label>
+
+      <label>
+        Destino
+        <input class="input" formControlName="destination" placeholder="Centro Histórico" />
+        <span class="form-error" *ngIf="errorFor('destination')">{{ errorFor('destination') }}</span>
+      </label>
+
+      <label>
+        Paraderos
+        <input class="input" type="number" formControlName="stops" />
+        <span class="form-error" *ngIf="errorFor('stops')">{{ errorFor('stops') }}</span>
+      </label>
+
+      <label>
+        Distancia (km)
+        <input class="input" type="number" formControlName="distanceKm" />
+        <span class="form-error" *ngIf="errorFor('distanceKm')">{{ errorFor('distanceKm') }}</span>
+      </label>
+
+      <label>
+        Color de ruta
+        <input class="input" type="color" formControlName="color" />
+        <span class="form-error" *ngIf="errorFor('color')">{{ errorFor('color') }}</span>
+      </label>
+
+      <button class="btn btn-primary" type="submit" [disabled]="saving">
+        {{ saving ? 'Guardando...' : 'Registrar ruta' }}
+      </button>
+    </form>
+
+    <div class="card list">
+      <h4>Rutas registradas</h4>
+      <div class="list-body" *ngIf="routes$ | async as routes">
+        <div class="row" *ngFor="let route of routes">
+          <div>
+            <strong>{{ route.name }}</strong>
+            <span>{{ route.origin }} → {{ route.destination }}</span>
+          </div>
+          <div class="meta">
+            <span class="chip" [style.background]="route.color"></span>
+            <span>{{ route.code }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

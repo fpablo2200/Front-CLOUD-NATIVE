@@ -1,0 +1,74 @@
+<div class="page">
+  <div>
+    <h3>Horarios operativos</h3>
+    <p>Gestiona frecuencias y jornadas por ruta.</p>
+  </div>
+
+  <div class="grid">
+    <form class="card form" [formGroup]="form" (ngSubmit)="submit()">
+      <h4>Nuevo horario</h4>
+
+      <label>
+        Ruta
+        <input class="input" formControlName="routeCode" placeholder="R-NC" />
+        <span class="form-error" *ngIf="errorFor('routeCode')">{{ errorFor('routeCode') }}</span>
+      </label>
+
+      <label>
+        Tipo de día
+        <select class="input" formControlName="dayType">
+          <option>Laboral</option>
+          <option>Sábado</option>
+          <option>Domingo</option>
+          <option>Festivo</option>
+        </select>
+      </label>
+
+      <label>
+        Inicio
+        <input class="input" type="time" formControlName="startTime" />
+        <span class="form-error" *ngIf="errorFor('startTime')">{{ errorFor('startTime') }}</span>
+      </label>
+
+      <label>
+        Fin
+        <input class="input" type="time" formControlName="endTime" />
+        <span class="form-error" *ngIf="errorFor('endTime')">{{ errorFor('endTime') }}</span>
+      </label>
+
+      <label>
+        Frecuencia (min)
+        <input class="input" type="number" formControlName="frequencyMin" />
+        <span class="form-error" *ngIf="errorFor('frequencyMin')">{{ errorFor('frequencyMin') }}</span>
+      </label>
+
+      <label>
+        Zona horaria
+        <input class="input" formControlName="timezone" />
+        <span class="form-error" *ngIf="errorFor('timezone')">{{ errorFor('timezone') }}</span>
+      </label>
+
+      <label>
+        Observaciones
+        <textarea class="input" rows="3" formControlName="notes"></textarea>
+      </label>
+
+      <button class="btn btn-primary" type="submit" [disabled]="saving">
+        {{ saving ? 'Guardando...' : 'Registrar horario' }}
+      </button>
+    </form>
+
+    <div class="card list">
+      <h4>Horarios activos</h4>
+      <div class="list-body" *ngIf="schedules$ | async as schedules">
+        <div class="row" *ngFor="let schedule of schedules">
+          <div>
+            <strong>{{ schedule.routeCode }} · {{ schedule.dayType }}</strong>
+            <span>{{ schedule.startTime }} - {{ schedule.endTime }} | {{ schedule.frequencyMin }} min</span>
+          </div>
+          <span class="badge badge-success">{{ schedule.timezone }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

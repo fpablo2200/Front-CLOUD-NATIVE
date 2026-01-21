@@ -1,0 +1,89 @@
+<section class="hero">
+  <div>
+    <h3>Visión general del sistema</h3>
+    <p>Controla la operación, coordina rutas y responde a incidentes en tiempo real.</p>
+  </div>
+  <button class="btn btn-primary">Generar reporte diario</button>
+</section>
+
+<section class="stats" *ngIf="overview$ | async as overview">
+  <div class="card">
+    <h4>Vehículos activos</h4>
+    <strong>{{ overview.activeVehicles }}</strong>
+    <span class="muted">Flota en operación</span>
+  </div>
+  <div class="card">
+    <h4>Retrasos</h4>
+    <strong>{{ overview.delayedVehicles }}</strong>
+    <span class="muted">Casos abiertos</span>
+  </div>
+  <div class="card">
+    <h4>Puntualidad</h4>
+    <strong>{{ overview.onTimeRate }}%</strong>
+    <span class="muted">Últimas 24 horas</span>
+  </div>
+  <div class="card">
+    <h4>Pasajeros</h4>
+    <strong>{{ overview.passengersToday | number }}</strong>
+    <span class="muted">Hoy</span>
+  </div>
+  <div class="card">
+    <h4>Incidentes</h4>
+    <strong>{{ overview.incidentsOpen }}</strong>
+    <span class="muted">En seguimiento</span>
+  </div>
+</section>
+
+<section class="grid">
+  <div class="card map">
+    <div class="map-header">
+      <h4>Mapa en tiempo real</h4>
+      <span class="muted">Actualiza cada 15 segundos</span>
+    </div>
+    <div class="map-body">
+      <div class="map-overlay">
+        <p>Integración con mapa GIS (placeholder)</p>
+        <div class="chips" *ngIf="locations$ | async as locations">
+          <span *ngFor="let location of locations">{{ location.id }}</span>
+        </div>
+      </div>
+      <div class="map-grid"></div>
+    </div>
+  </div>
+
+  <div class="card list">
+    <div class="list-header">
+      <h4>Flota en operación</h4>
+      <span class="muted">Estado de vehículos</span>
+    </div>
+    <div class="list-body" *ngIf="vehicles$ | async as vehicles">
+      <div class="row" *ngFor="let vehicle of vehicles">
+        <div>
+          <strong>{{ vehicle.code }}</strong>
+          <span>{{ vehicle.route }}</span>
+        </div>
+        <span [class]="statusBadge(vehicle.status)">{{ vehicle.status }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card list">
+    <div class="list-header">
+      <h4>Alertas recientes</h4>
+      <span class="muted">Prioridad operativa</span>
+    </div>
+    <div class="list-body" *ngIf="alerts$ | async as alerts">
+      <div class="row" *ngFor="let alert of alerts">
+        <div>
+          <strong>{{ alert.title }}</strong>
+          <span>{{ alert.description }}</span>
+        </div>
+        <span class="badge" [class.badge-danger]="alert.severity === 'Alta'"
+          [class.badge-warning]="alert.severity === 'Media'"
+          [class.badge-success]="alert.severity === 'Baja'">
+          {{ alert.severity }}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
