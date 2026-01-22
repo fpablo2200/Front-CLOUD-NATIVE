@@ -5,48 +5,48 @@
   </div>
 
   <div class="grid">
-    <form class="card form" [formGroup]="form" (ngSubmit)="submit()">
+    <form class="card form" [formGroup]="formulario" (ngSubmit)="enviar()">
       <h4>Nuevo vehículo</h4>
 
       <label>
         Placa
-        <input class="input" formControlName="plate" placeholder="ABC-1234" />
-        <span class="form-error" *ngIf="errorFor('plate')">{{ errorFor('plate') }}</span>
+        <input class="input" formControlName="placa" placeholder="ABC-1234" />
+        <span class="form-error" *ngIf="errorPara('placa')">{{ errorPara('placa') }}</span>
       </label>
 
       <label>
         Código interno
-        <input class="input" formControlName="code" placeholder="BUS-21" />
-        <span class="form-error" *ngIf="errorFor('code')">{{ errorFor('code') }}</span>
+        <input class="input" formControlName="codigo" placeholder="BUS-21" />
+        <span class="form-error" *ngIf="errorPara('codigo')">{{ errorPara('codigo') }}</span>
       </label>
 
       <label>
         Modelo
-        <input class="input" formControlName="model" placeholder="Volare W9" />
-        <span class="form-error" *ngIf="errorFor('model')">{{ errorFor('model') }}</span>
+        <input class="input" formControlName="modelo" placeholder="Volare W9" />
+        <span class="form-error" *ngIf="errorPara('modelo')">{{ errorPara('modelo') }}</span>
       </label>
 
       <label>
         Capacidad
-        <input class="input" type="number" formControlName="capacity" />
-        <span class="form-error" *ngIf="errorFor('capacity')">{{ errorFor('capacity') }}</span>
+        <input class="input" type="number" formControlName="capacidad" />
+        <span class="form-error" *ngIf="errorPara('capacidad')">{{ errorPara('capacidad') }}</span>
       </label>
 
       <label>
         Ruta asignada
-        <input class="input" formControlName="route" placeholder="Norte Centro" />
-        <span class="form-error" *ngIf="errorFor('route')">{{ errorFor('route') }}</span>
+        <input class="input" formControlName="ruta" placeholder="Norte Centro" />
+        <span class="form-error" *ngIf="errorPara('ruta')">{{ errorPara('ruta') }}</span>
       </label>
 
       <label>
         Conductor
-        <input class="input" formControlName="driver" placeholder="Valeria Soto" />
-        <span class="form-error" *ngIf="errorFor('driver')">{{ errorFor('driver') }}</span>
+        <input class="input" formControlName="conductor" placeholder="Valeria Soto" />
+        <span class="form-error" *ngIf="errorPara('conductor')">{{ errorPara('conductor') }}</span>
       </label>
 
       <label>
         Estado
-        <select class="input" formControlName="status">
+        <select class="input" formControlName="estado">
           <option>En ruta</option>
           <option>En terminal</option>
           <option>Retrasado</option>
@@ -54,25 +54,25 @@
         </select>
       </label>
 
-      <button class="btn btn-primary" type="submit" [disabled]="saving">
-        {{ saving ? 'Guardando...' : 'Registrar vehículo' }}
+      <button class="btn btn-primary" type="submit" [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : 'Registrar vehículo' }}
       </button>
     </form>
 
     <div class="card list">
       <h4>Flota registrada</h4>
-      <div class="list-body" *ngIf="vehicles$ | async as vehicles">
-        <div class="row" *ngFor="let vehicle of vehicles">
+      <div class="list-body" *ngIf="vehiculos$ | async as vehiculos">
+        <div class="row" *ngFor="let vehiculo of vehiculos">
           <div>
-            <strong>{{ vehicle.code }}</strong>
-            <span>{{ vehicle.route }} · {{ vehicle.driver }}</span>
+            <strong>{{ vehiculo.codigo }}</strong>
+            <span>{{ vehiculo.ruta }} · {{ vehiculo.conductor }}</span>
           </div>
           <div class="meta">
-            <span class="plate">{{ vehicle.plate }}</span>
-            <span class="badge" [class.badge-warning]="vehicle.status === 'Retrasado'"
-              [class.badge-danger]="vehicle.status === 'Mantenimiento'"
-              [class.badge-success]="vehicle.status === 'En ruta' || vehicle.status === 'En terminal'">
-              {{ vehicle.status }}
+            <span class="plate">{{ vehiculo.placa }}</span>
+            <span class="badge" [class.badge-warning]="vehiculo.estado === 'Retrasado'"
+              [class.badge-danger]="vehiculo.estado === 'Mantenimiento'"
+              [class.badge-success]="vehiculo.estado === 'En ruta' || vehiculo.estado === 'En terminal'">
+              {{ vehiculo.estado }}
             </span>
           </div>
         </div>

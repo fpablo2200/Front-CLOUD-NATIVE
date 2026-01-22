@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
-import { RouteCreate } from '../../models/transport.models';
+import { CrearRuta } from '../../models/transport.models';
 import { TransportApiService } from '../../services/transport-api.service';
 
 @Component({
@@ -16,47 +16,47 @@ export class RoutesComponent {
   private api = inject(TransportApiService);
   private fb = inject(FormBuilder);
 
-  saving = false;
-  routes$ = this.api.getRoutes();
+  guardando = false;
+  rutas$ = this.api.obtenerRutas();
 
-  form = this.fb.group({
-    code: ['', [Validators.required, Validators.minLength(2)]],
-    name: ['', [Validators.required]],
-    origin: ['', [Validators.required]],
-    destination: ['', [Validators.required]],
-    stops: [10, [Validators.required, Validators.min(2), Validators.max(60)]],
-    distanceKm: [12, [Validators.required, Validators.min(1), Validators.max(200)]],
+  formulario = this.fb.group({
+    codigo: ['', [Validators.required, Validators.minLength(2)]],
+    nombre: ['', [Validators.required]],
+    origen: ['', [Validators.required]],
+    destino: ['', [Validators.required]],
+    paradas: [10, [Validators.required, Validators.min(2), Validators.max(60)]],
+    distanciaKm: [12, [Validators.required, Validators.min(1), Validators.max(200)]],
     color: ['#1d4ed8', [Validators.required]]
   });
 
-  submit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+  enviar() {
+    if (this.formulario.invalid) {
+      this.formulario.markAllAsTouched();
       return;
     }
 
-    this.saving = true;
-    const payload = this.form.getRawValue() as RouteCreate;
+    this.guardando = true;
+    const datos = this.formulario.getRawValue() as CrearRuta;
 
     this.api
-      .createRoute(payload)
-      .pipe(finalize(() => (this.saving = false)))
+      .crearRuta(datos)
+      .pipe(finalize(() => (this.guardando = false)))
       .subscribe(() => {
-        this.routes$ = this.api.getRoutes();
-        this.form.reset({
-          code: '',
-          name: '',
-          origin: '',
-          destination: '',
-          stops: 10,
-          distanceKm: 12,
+        this.rutas$ = this.api.obtenerRutas();
+        this.formulario.reset({
+          codigo: '',
+          nombre: '',
+          origen: '',
+          destino: '',
+          paradas: 10,
+          distanciaKm: 12,
           color: '#1d4ed8'
         });
       });
   }
 
-  errorFor(controlName: string) {
-    const control = this.form.get(controlName);
+  errorPara(nombreControl: string) {
+    const control = this.formulario.get(nombreControl);
     if (!control || !control.touched || !control.errors) {
       return null;
     }

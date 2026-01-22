@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TransportApiService } from '../../services/transport-api.service';
-import { VehicleCreate } from '../../models/transport.models';
+import { CrearVehiculo } from '../../models/transport.models';
 import { finalize } from 'rxjs';
 
 @Component({
@@ -16,47 +16,47 @@ export class VehiclesComponent {
   private api = inject(TransportApiService);
   private fb = inject(FormBuilder);
 
-  saving = false;
-  vehicles$ = this.api.getVehicles();
+  guardando = false;
+  vehiculos$ = this.api.obtenerVehiculos();
 
-  form = this.fb.group({
-    plate: ['', [Validators.required, Validators.pattern(/^[A-Z]{2,3}-\d{3,4}$/)]],
-    code: ['', [Validators.required, Validators.minLength(3)]],
-    model: ['', [Validators.required]],
-    capacity: [40, [Validators.required, Validators.min(5), Validators.max(200)]],
-    route: ['', [Validators.required]],
-    driver: ['', [Validators.required]],
-    status: ['En ruta', Validators.required]
+  formulario = this.fb.group({
+    placa: ['', [Validators.required, Validators.pattern(/^[A-Z]{2,3}-\d{3,4}$/)]],
+    codigo: ['', [Validators.required, Validators.minLength(3)]],
+    modelo: ['', [Validators.required]],
+    capacidad: [40, [Validators.required, Validators.min(5), Validators.max(200)]],
+    ruta: ['', [Validators.required]],
+    conductor: ['', [Validators.required]],
+    estado: ['En ruta', Validators.required]
   });
 
-  submit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+  enviar() {
+    if (this.formulario.invalid) {
+      this.formulario.markAllAsTouched();
       return;
     }
 
-    this.saving = true;
-    const payload = this.form.getRawValue() as VehicleCreate;
+    this.guardando = true;
+    const datos = this.formulario.getRawValue() as CrearVehiculo;
 
     this.api
-      .createVehicle(payload)
-      .pipe(finalize(() => (this.saving = false)))
+      .crearVehiculo(datos)
+      .pipe(finalize(() => (this.guardando = false)))
       .subscribe(() => {
-        this.vehicles$ = this.api.getVehicles();
-        this.form.reset({
-          plate: '',
-          code: '',
-          model: '',
-          capacity: 40,
-          route: '',
-          driver: '',
-          status: 'En ruta'
+        this.vehiculos$ = this.api.obtenerVehiculos();
+        this.formulario.reset({
+          placa: '',
+          codigo: '',
+          modelo: '',
+          capacidad: 40,
+          ruta: '',
+          conductor: '',
+          estado: 'En ruta'
         });
       });
   }
 
-  errorFor(controlName: string) {
-    const control = this.form.get(controlName);
+  errorPara(nombreControl: string) {
+    const control = this.formulario.get(nombreControl);
     if (!control || !control.touched || !control.errors) {
       return null;
     }

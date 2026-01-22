@@ -5,67 +5,67 @@
   </div>
 
   <div class="grid">
-    <form class="card form" [formGroup]="form" (ngSubmit)="submit()">
+    <form class="card form" [formGroup]="formulario" (ngSubmit)="enviar()">
       <h4>Nueva ruta</h4>
 
       <label>
         Código
-        <input class="input" formControlName="code" placeholder="R-NC" />
-        <span class="form-error" *ngIf="errorFor('code')">{{ errorFor('code') }}</span>
+        <input class="input" formControlName="codigo" placeholder="R-NC" />
+        <span class="form-error" *ngIf="errorPara('codigo')">{{ errorPara('codigo') }}</span>
       </label>
 
       <label>
         Nombre
-        <input class="input" formControlName="name" placeholder="Norte Centro" />
-        <span class="form-error" *ngIf="errorFor('name')">{{ errorFor('name') }}</span>
+        <input class="input" formControlName="nombre" placeholder="Norte Centro" />
+        <span class="form-error" *ngIf="errorPara('nombre')">{{ errorPara('nombre') }}</span>
       </label>
 
       <label>
         Origen
-        <input class="input" formControlName="origin" placeholder="Terminal Norte" />
-        <span class="form-error" *ngIf="errorFor('origin')">{{ errorFor('origin') }}</span>
+        <input class="input" formControlName="origen" placeholder="Terminal Norte" />
+        <span class="form-error" *ngIf="errorPara('origen')">{{ errorPara('origen') }}</span>
       </label>
 
       <label>
         Destino
-        <input class="input" formControlName="destination" placeholder="Centro Histórico" />
-        <span class="form-error" *ngIf="errorFor('destination')">{{ errorFor('destination') }}</span>
+        <input class="input" formControlName="destino" placeholder="Centro Histórico" />
+        <span class="form-error" *ngIf="errorPara('destino')">{{ errorPara('destino') }}</span>
       </label>
 
       <label>
         Paraderos
-        <input class="input" type="number" formControlName="stops" />
-        <span class="form-error" *ngIf="errorFor('stops')">{{ errorFor('stops') }}</span>
+        <input class="input" type="number" formControlName="paradas" />
+        <span class="form-error" *ngIf="errorPara('paradas')">{{ errorPara('paradas') }}</span>
       </label>
 
       <label>
         Distancia (km)
-        <input class="input" type="number" formControlName="distanceKm" />
-        <span class="form-error" *ngIf="errorFor('distanceKm')">{{ errorFor('distanceKm') }}</span>
+        <input class="input" type="number" formControlName="distanciaKm" />
+        <span class="form-error" *ngIf="errorPara('distanciaKm')">{{ errorPara('distanciaKm') }}</span>
       </label>
 
       <label>
         Color de ruta
         <input class="input" type="color" formControlName="color" />
-        <span class="form-error" *ngIf="errorFor('color')">{{ errorFor('color') }}</span>
+        <span class="form-error" *ngIf="errorPara('color')">{{ errorPara('color') }}</span>
       </label>
 
-      <button class="btn btn-primary" type="submit" [disabled]="saving">
-        {{ saving ? 'Guardando...' : 'Registrar ruta' }}
+      <button class="btn btn-primary" type="submit" [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : 'Registrar ruta' }}
       </button>
     </form>
 
     <div class="card list">
       <h4>Rutas registradas</h4>
-      <div class="list-body" *ngIf="routes$ | async as routes">
-        <div class="row" *ngFor="let route of routes">
+      <div class="list-body" *ngIf="rutas$ | async as rutas">
+        <div class="row" *ngFor="let ruta of rutas">
           <div>
-            <strong>{{ route.name }}</strong>
-            <span>{{ route.origin }} → {{ route.destination }}</span>
+            <strong>{{ ruta.nombre }}</strong>
+            <span>{{ ruta.origen }} → {{ ruta.destino }}</span>
           </div>
           <div class="meta">
-            <span class="chip" [style.background]="route.color"></span>
-            <span>{{ route.code }}</span>
+            <span class="chip" [style.background]="ruta.color"></span>
+            <span>{{ ruta.codigo }}</span>
           </div>
         </div>
       </div>

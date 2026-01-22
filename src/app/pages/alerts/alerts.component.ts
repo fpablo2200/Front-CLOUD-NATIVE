@@ -12,5 +12,5 @@ import { TransportApiService } from '../../services/transport-api.service';
 export class AlertsComponent {
   private api = inject(TransportApiService);
 
-  alerts$ = this.api.getAlerts();
+  alertas$ = this.api.obtenerAlertas();
 }

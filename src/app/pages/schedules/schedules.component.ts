@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
-import { ScheduleCreate } from '../../models/transport.models';
+import { CrearHorario } from '../../models/transport.models';
 import { TransportApiService } from '../../services/transport-api.service';
 
 @Component({
@@ -16,47 +16,47 @@ export class SchedulesComponent {
   private api = inject(TransportApiService);
   private fb = inject(FormBuilder);
 
-  saving = false;
-  schedules$ = this.api.getSchedules();
+  guardando = false;
+  horarios$ = this.api.obtenerHorarios();
 
-  form = this.fb.group({
-    routeCode: ['', [Validators.required]],
-    dayType: ['Laboral', [Validators.required]],
-    startTime: ['05:00', [Validators.required]],
-    endTime: ['22:30', [Validators.required]],
-    frequencyMin: [10, [Validators.required, Validators.min(5), Validators.max(60)]],
-    timezone: ['America/Bogota', [Validators.required]],
-    notes: ['']
+  formulario = this.fb.group({
+    codigoRuta: ['', [Validators.required]],
+    tipoDia: ['Laboral', [Validators.required]],
+    horaInicio: ['05:00', [Validators.required]],
+    horaFin: ['22:30', [Validators.required]],
+    frecuenciaMin: [10, [Validators.required, Validators.min(5), Validators.max(60)]],
+    zonaHoraria: ['America/Bogota', [Validators.required]],
+    notas: ['']
   });
 
-  submit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+  enviar() {
+    if (this.formulario.invalid) {
+      this.formulario.markAllAsTouched();
       return;
     }
 
-    this.saving = true;
-    const payload = this.form.getRawValue() as ScheduleCreate;
+    this.guardando = true;
+    const datos = this.formulario.getRawValue() as CrearHorario;
 
     this.api
-      .createSchedule(payload)
-      .pipe(finalize(() => (this.saving = false)))
+      .crearHorario(datos)
+      .pipe(finalize(() => (this.guardando = false)))
       .subscribe(() => {
-        this.schedules$ = this.api.getSchedules();
-        this.form.reset({
-          routeCode: '',
-          dayType: 'Laboral',
-          startTime: '05:00',
-          endTime: '22:30',
-          frequencyMin: 10,
-          timezone: 'America/Bogota',
-          notes: ''
+        this.horarios$ = this.api.obtenerHorarios();
+        this.formulario.reset({
+          codigoRuta: '',
+          tipoDia: 'Laboral',
+          horaInicio: '05:00',
+          horaFin: '22:30',
+          frecuenciaMin: 10,
+          zonaHoraria: 'America/Bogota',
+          notas: ''
         });
       });
   }
 
-  errorFor(controlName: string) {
-    const control = this.form.get(controlName);
+  errorPara(nombreControl: string) {
+    const control = this.formulario.get(nombreControl);
     if (!control || !control.touched || !control.errors) {
       return null;
     }

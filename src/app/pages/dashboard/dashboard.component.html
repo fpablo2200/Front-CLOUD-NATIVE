@@ -6,30 +6,30 @@
   <button class="btn btn-primary">Generar reporte diario</button>
 </section>
 
-<section class="stats" *ngIf="overview$ | async as overview">
+<section class="stats" *ngIf="resumen$ | async as resumen">
   <div class="card">
     <h4>Vehículos activos</h4>
-    <strong>{{ overview.activeVehicles }}</strong>
+    <strong>{{ resumen.vehiculosActivos }}</strong>
     <span class="muted">Flota en operación</span>
   </div>
   <div class="card">
     <h4>Retrasos</h4>
-    <strong>{{ overview.delayedVehicles }}</strong>
+    <strong>{{ resumen.vehiculosRetrasados }}</strong>
     <span class="muted">Casos abiertos</span>
   </div>
   <div class="card">
     <h4>Puntualidad</h4>
-    <strong>{{ overview.onTimeRate }}%</strong>
+    <strong>{{ resumen.tasaPuntualidad }}%</strong>
     <span class="muted">Últimas 24 horas</span>
   </div>
   <div class="card">
     <h4>Pasajeros</h4>
-    <strong>{{ overview.passengersToday | number }}</strong>
+    <strong>{{ resumen.pasajerosHoy | number }}</strong>
     <span class="muted">Hoy</span>
   </div>
   <div class="card">
     <h4>Incidentes</h4>
-    <strong>{{ overview.incidentsOpen }}</strong>
+    <strong>{{ resumen.incidenciasAbiertas }}</strong>
     <span class="muted">En seguimiento</span>
   </div>
 </section>
@@ -43,8 +43,8 @@
     <div class="map-body">
       <div class="map-overlay">
         <p>Integración con mapa GIS (placeholder)</p>
-        <div class="chips" *ngIf="locations$ | async as locations">
-          <span *ngFor="let location of locations">{{ location.id }}</span>
+        <div class="chips" *ngIf="ubicaciones$ | async as ubicaciones">
+          <span *ngFor="let ubicacion of ubicaciones">{{ ubicacion.id }}</span>
         </div>
       </div>
       <div class="map-grid"></div>
@@ -56,13 +56,13 @@
       <h4>Flota en operación</h4>
       <span class="muted">Estado de vehículos</span>
     </div>
-    <div class="list-body" *ngIf="vehicles$ | async as vehicles">
-      <div class="row" *ngFor="let vehicle of vehicles">
+    <div class="list-body" *ngIf="vehiculos$ | async as vehiculos">
+      <div class="row" *ngFor="let vehiculo of vehiculos">
         <div>
-          <strong>{{ vehicle.code }}</strong>
-          <span>{{ vehicle.route }}</span>
+          <strong>{{ vehiculo.codigo }}</strong>
+          <span>{{ vehiculo.ruta }}</span>
         </div>
-        <span [class]="statusBadge(vehicle.status)">{{ vehicle.status }}</span>
+        <span [class]="estadoBadge(vehiculo.estado)">{{ vehiculo.estado }}</span>
       </div>
     </div>
   </div>
@@ -72,16 +72,16 @@
       <h4>Alertas recientes</h4>
       <span class="muted">Prioridad operativa</span>
     </div>
-    <div class="list-body" *ngIf="alerts$ | async as alerts">
-      <div class="row" *ngFor="let alert of alerts">
+    <div class="list-body" *ngIf="alertas$ | async as alertas">
+      <div class="row" *ngFor="let alerta of alertas">
         <div>
-          <strong>{{ alert.title }}</strong>
-          <span>{{ alert.description }}</span>
+          <strong>{{ alerta.titulo }}</strong>
+          <span>{{ alerta.descripcion }}</span>
         </div>
-        <span class="badge" [class.badge-danger]="alert.severity === 'Alta'"
-          [class.badge-warning]="alert.severity === 'Media'"
-          [class.badge-success]="alert.severity === 'Baja'">
-          {{ alert.severity }}
+        <span class="badge" [class.badge-danger]="alerta.severidad === 'Alta'"
+          [class.badge-warning]="alerta.severidad === 'Media'"
+          [class.badge-success]="alerta.severidad === 'Baja'">
+          {{ alerta.severidad }}
         </span>
       </div>
     </div>

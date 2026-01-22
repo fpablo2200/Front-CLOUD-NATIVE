@@ -5,18 +5,18 @@
   </div>
 
   <div class="grid">
-    <form class="card form" [formGroup]="form" (ngSubmit)="submit()">
+    <form class="card form" [formGroup]="formulario" (ngSubmit)="enviar()">
       <h4>Nuevo horario</h4>
 
       <label>
         Ruta
-        <input class="input" formControlName="routeCode" placeholder="R-NC" />
-        <span class="form-error" *ngIf="errorFor('routeCode')">{{ errorFor('routeCode') }}</span>
+        <input class="input" formControlName="codigoRuta" placeholder="R-NC" />
+        <span class="form-error" *ngIf="errorPara('codigoRuta')">{{ errorPara('codigoRuta') }}</span>
       </label>
 
       <label>
         Tipo de día
-        <select class="input" formControlName="dayType">
+        <select class="input" formControlName="tipoDia">
           <option>Laboral</option>
           <option>Sábado</option>
           <option>Domingo</option>
@@ -26,47 +26,47 @@
 
       <label>
         Inicio
-        <input class="input" type="time" formControlName="startTime" />
-        <span class="form-error" *ngIf="errorFor('startTime')">{{ errorFor('startTime') }}</span>
+        <input class="input" type="time" formControlName="horaInicio" />
+        <span class="form-error" *ngIf="errorPara('horaInicio')">{{ errorPara('horaInicio') }}</span>
       </label>
 
       <label>
         Fin
-        <input class="input" type="time" formControlName="endTime" />
-        <span class="form-error" *ngIf="errorFor('endTime')">{{ errorFor('endTime') }}</span>
+        <input class="input" type="time" formControlName="horaFin" />
+        <span class="form-error" *ngIf="errorPara('horaFin')">{{ errorPara('horaFin') }}</span>
       </label>
 
       <label>
         Frecuencia (min)
-        <input class="input" type="number" formControlName="frequencyMin" />
-        <span class="form-error" *ngIf="errorFor('frequencyMin')">{{ errorFor('frequencyMin') }}</span>
+        <input class="input" type="number" formControlName="frecuenciaMin" />
+        <span class="form-error" *ngIf="errorPara('frecuenciaMin')">{{ errorPara('frecuenciaMin') }}</span>
       </label>
 
       <label>
         Zona horaria
-        <input class="input" formControlName="timezone" />
-        <span class="form-error" *ngIf="errorFor('timezone')">{{ errorFor('timezone') }}</span>
+        <input class="input" formControlName="zonaHoraria" />
+        <span class="form-error" *ngIf="errorPara('zonaHoraria')">{{ errorPara('zonaHoraria') }}</span>
       </label>
 
       <label>
         Observaciones
-        <textarea class="input" rows="3" formControlName="notes"></textarea>
+        <textarea class="input" rows="3" formControlName="notas"></textarea>
       </label>
 
-      <button class="btn btn-primary" type="submit" [disabled]="saving">
-        {{ saving ? 'Guardando...' : 'Registrar horario' }}
+      <button class="btn btn-primary" type="submit" [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : 'Registrar horario' }}
       </button>
     </form>
 
     <div class="card list">
       <h4>Horarios activos</h4>
-      <div class="list-body" *ngIf="schedules$ | async as schedules">
-        <div class="row" *ngFor="let schedule of schedules">
+      <div class="list-body" *ngIf="horarios$ | async as horarios">
+        <div class="row" *ngFor="let horario of horarios">
           <div>
-            <strong>{{ schedule.routeCode }} · {{ schedule.dayType }}</strong>
-            <span>{{ schedule.startTime }} - {{ schedule.endTime }} | {{ schedule.frequencyMin }} min</span>
+            <strong>{{ horario.codigoRuta }} · {{ horario.tipoDia }}</strong>
+            <span>{{ horario.horaInicio }} - {{ horario.horaFin }} | {{ horario.frecuenciaMin }} min</span>
           </div>
-          <span class="badge badge-success">{{ schedule.timezone }}</span>
+          <span class="badge badge-success">{{ horario.zonaHoraria }}</span>
         </div>
       </div>
     </div>

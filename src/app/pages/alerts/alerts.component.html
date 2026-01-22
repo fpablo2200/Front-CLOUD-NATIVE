@@ -4,20 +4,20 @@
     <p>Seguimiento de eventos críticos y comunicados operativos.</p>
   </div>
 
-  <div class="card list" *ngIf="alerts$ | async as alerts">
-    <div class="row" *ngFor="let alert of alerts">
+  <div class="card list" *ngIf="alertas$ | async as alertas">
+    <div class="row" *ngFor="let alerta of alertas">
       <div>
-        <strong>{{ alert.title }}</strong>
-        <span>{{ alert.description }}</span>
-        <small>{{ alert.createdAt }}</small>
+        <strong>{{ alerta.titulo }}</strong>
+        <span>{{ alerta.descripcion }}</span>
+        <small>{{ alerta.creadoEn }}</small>
       </div>
       <div class="meta">
-        <span class="badge" [class.badge-danger]="alert.severity === 'Alta'"
-          [class.badge-warning]="alert.severity === 'Media'"
-          [class.badge-success]="alert.severity === 'Baja'">
-          {{ alert.severity }}
+        <span class="badge" [class.badge-danger]="alerta.severidad === 'Alta'"
+          [class.badge-warning]="alerta.severidad === 'Media'"
+          [class.badge-success]="alerta.severidad === 'Baja'">
+          {{ alerta.severidad }}
         </span>
-        <span class="type">{{ alert.type }}</span>
+        <span class="type">{{ alerta.tipo }}</span>
       </div>
     </div>
   </div>

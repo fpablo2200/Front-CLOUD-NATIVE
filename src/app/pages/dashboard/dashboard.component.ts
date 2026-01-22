@@ -12,16 +12,16 @@ import { TransportApiService } from '../../services/transport-api.service';
 export class DashboardComponent {
   private api = inject(TransportApiService);
 
-  overview$ = this.api.getOverview();
-  vehicles$ = this.api.getVehicles();
-  alerts$ = this.api.getAlerts();
-  locations$ = this.api.getVehicleLocations$();
+  resumen$ = this.api.obtenerResumen();
+  vehiculos$ = this.api.obtenerVehiculos();
+  alertas$ = this.api.obtenerAlertas();
+  ubicaciones$ = this.api.obtenerUbicacionesVehiculos$();
 
-  statusBadge(status: string) {
-    if (status === 'Retrasado') {
+  estadoBadge(estado: string) {
+    if (estado === 'Retrasado') {
       return 'badge badge-warning';
     }
-    if (status === 'Mantenimiento') {
+    if (estado === 'Mantenimiento') {
       return 'badge badge-danger';
     }
     return 'badge badge-success';
